@@ -6,6 +6,7 @@ function run() {
   const body: string =
     (github.context.payload.pull_request?.body as string) ?? "";
 
+  core.debug(`containsString: ${containsString}`);
   core.debug(`PR Body: ${body}`);
   if (!body.includes(containsString)) {
     core.setFailed(`PR body does not contain ${containsString}`);
