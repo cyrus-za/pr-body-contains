@@ -5801,7 +5801,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const github = __importStar(__nccwpck_require__(438));
-async function run() {
+function run() {
     var _a, _b;
     const containsString = core.getInput("containsString");
     const body = (_b = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.body) !== null && _b !== void 0 ? _b : "";
@@ -5814,9 +5814,7 @@ async function run() {
         core.setOutput("contains", true);
     }
 }
-run().catch((error) => {
-    core.setFailed(error);
-});
+run();
 
 
 /***/ }),
