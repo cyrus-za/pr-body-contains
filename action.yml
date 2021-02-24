@@ -8,10 +8,6 @@ inputs:
   bodyContains:
     description: "A string that needs to be searched inside the PR body"
     required: true
-  repo-token:
-    description:
-      "Github token with access to the repository (secrets.GITHUB_TOKEN)."
-    required: true
 runs:
   using: "node12"
   main: "dist/index.js"
