@@ -2,7 +2,9 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 
 function run() {
-  const containsString: string = core.getInput("containsString");
+  const containsString: string = core.getInput("containsString", {
+    required: true,
+  });
   const body: string =
     (github.context.payload.pull_request?.body as string) ?? "";
 
