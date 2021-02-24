@@ -5809,6 +5809,10 @@ async function run() {
     if (!body.includes(containsString)) {
         core.setFailed(`PR body does not contain ${containsString}`);
     }
+    else {
+        console.log("String found 🎉");
+        core.setOutput("contains", true);
+    }
 }
 run().catch((error) => {
     core.setFailed(error);
