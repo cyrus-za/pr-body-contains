@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
-async function run(): Promise<void> {
+function run() {
   const containsString: string = core.getInput("containsString");
   const body: string =
     (github.context.payload.pull_request?.body as string) ?? "";
@@ -15,6 +15,4 @@ async function run(): Promise<void> {
   }
 }
 
-run().catch((error) => {
-  core.setFailed(error);
-});
+run();
