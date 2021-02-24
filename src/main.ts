@@ -9,6 +9,9 @@ async function run(): Promise<void> {
   core.debug(`PR Body: ${body}`);
   if (!body.includes(containsString)) {
     core.setFailed(`PR body does not contain ${containsString}`);
+  } else {
+    console.log("String found 🎉");
+    core.setOutput("contains", true);
   }
 }
 
