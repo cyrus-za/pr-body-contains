@@ -5801,72 +5801,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const github = __importStar(__nccwpck_require__(438));
-const repoTokenInput = core.getInput("repo-token", { required: true });
-const githubClient = github.getOctokit(repoTokenInput);
-const titleRegexInput = core.getInput("title-regex", {
-    required: true,
-});
-const onFailedRegexCreateReviewInput = core.getInput("on-failed-regex-create-review") == "true";
-const onFailedRegexCommentInput = core.getInput("on-failed-regex-comment");
-const onFailedRegexFailActionInput = core.getInput("on-failed-regex-fail-action") == "true";
-const onFailedRegexRequestChanges = core.getInput("on-failed-regex-request-changes") == "true";
 async function run() {
     var _a, _b;
-    const githubContext = github.context;
-    const pullRequest = githubContext.issue;
-    const titleRegex = new RegExp(titleRegexInput);
-    const title = (_b = (_a = githubContext.payload.pull_request) === null || _a === void 0 ? void 0 : _a.title) !== null && _b !== void 0 ? _b : "";
-    const comment = onFailedRegexCommentInput.replace("%regex%", titleRegex.source);
-    core.debug(`Title Regex: ${titleRegex.source}`);
-    core.debug(`Title: ${title}`);
-    const titleMatchesRegex = titleRegex.test(title);
-    if (!titleMatchesRegex) {
-        if (onFailedRegexCreateReviewInput) {
-            createReview(comment, pullRequest);
-        }
-        if (onFailedRegexFailActionInput) {
-            core.setFailed(comment);
-        }
+    const containsString = core.getInput("containsString");
+    const body = (_b = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.body) !== null && _b !== void 0 ? _b : "";
+    core.debug(`PR Body: ${body}`);
+    if (!body.includes(containsString)) {
+        core.setFailed(`PR body does not contain ${containsString}`);
     }
-    else {
-        if (onFailedRegexCreateReviewInput) {
-            await dismissReview(pullRequest);
-        }
-    }
-}
-function createReview(comment, pullRequest) {
-    void githubClient.pulls.createReview({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
-        body: comment,
-        event: onFailedRegexRequestChanges ? "REQUEST_CHANGES" : "COMMENT",
-    });
-}
-async function dismissReview(pullRequest) {
-    const reviews = await githubClient.pulls.listReviews({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
-    });
-    reviews.data.forEach((review) => {
-        if (isGitHubActionUser(review.user.login) &&
-            alreadyRequiredChanges(review.state)) {
-            void githubClient.pulls.dismissReview({
-                owner: pullRequest.owner,
-                repo: pullRequest.repo,
-                pull_number: pullRequest.number,
-                review_id: review.id,
-                message: "All good!",
-            });
-        }
-    });
-}
-function isGitHubActionUser(login) {
-    return login == "github-actions[bot]";
-}
-function alreadyRequiredChanges(state) {
-    return state == "CHANGES_REQUESTED";
 }
 run().catch((error) => {
     core.setFailed(error);
