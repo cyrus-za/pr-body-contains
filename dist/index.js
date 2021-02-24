@@ -5805,6 +5805,7 @@ function run() {
     var _a, _b;
     const containsString = core.getInput("containsString");
     const body = (_b = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.body) !== null && _b !== void 0 ? _b : "";
+    core.debug(`containsString: ${containsString}`);
     core.debug(`PR Body: ${body}`);
     if (!body.includes(containsString)) {
         core.setFailed(`PR body does not contain ${containsString}`);
