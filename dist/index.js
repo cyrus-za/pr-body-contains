@@ -5806,11 +5806,12 @@ function run() {
     const bodyContains = core.getInput("bodyContains", {
         required: true,
     });
+    const errorMessage = core.getInput("errorMessage");
     const body = (_b = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.body) !== null && _b !== void 0 ? _b : "";
     core.debug(`bodyContains: ${bodyContains}`);
     core.debug(`PR Body: ${body}`);
     if (!body.includes(bodyContains)) {
-        core.setFailed(`PR body does not contain ${bodyContains}`);
+        core.setFailed(errorMessage !== null && errorMessage !== void 0 ? errorMessage : `PR body does not contain ${bodyContains}`);
     }
     else {
         console.log("String found 🎉");
