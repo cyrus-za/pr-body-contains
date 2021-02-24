@@ -5803,7 +5803,9 @@ const core = __importStar(__nccwpck_require__(186));
 const github = __importStar(__nccwpck_require__(438));
 function run() {
     var _a, _b;
-    const containsString = core.getInput("containsString");
+    const containsString = core.getInput("containsString", {
+        required: true,
+    });
     const body = (_b = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.body) !== null && _b !== void 0 ? _b : "";
     core.debug(`containsString: ${containsString}`);
     core.debug(`PR Body: ${body}`);
