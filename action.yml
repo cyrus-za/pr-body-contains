@@ -8,6 +8,8 @@ inputs:
   bodyContains:
     description: "A string that needs to be searched inside the PR body"
     required: true
+  errorMessage:
+    description: "A optional string gets output in the logs"
 runs:
   using: "node12"
   main: "dist/index.js"
