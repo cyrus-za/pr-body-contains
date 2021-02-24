@@ -10,6 +10,8 @@ inputs:
     required: true
   errorMessage:
     description: "A optional string gets output in the logs"
+  failSilent:
+    description: "A optional boolean to fail silently and output changed: false"
 runs:
   using: "node12"
   main: "dist/index.js"

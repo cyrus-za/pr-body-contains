@@ -6,13 +6,18 @@ function run() {
     required: true,
   });
   const errorMessage: string = core.getInput("errorMessage");
+  const failSilent: string = core.getInput("failSilent");
   const body: string =
     (github.context.payload.pull_request?.body as string) ?? "";
 
   core.debug(`bodyContains: ${bodyContains}`);
   core.debug(`PR Body: ${body}`);
   if (!body.includes(bodyContains)) {
-    core.setFailed(errorMessage ?? `PR body does not contain ${bodyContains}`);
+    if (failSilent) core.setOutput("contains", false);
+    else
+      core.setFailed(
+        errorMessage ?? `PR body does not contain ${bodyContains}`
+      );
   } else {
     console.log("String found 🎉");
     core.setOutput("contains", true);
